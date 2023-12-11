@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+h4 {
+margin-bottom: 5px;
+}
+
+p {
+  margin-top: 5px;
+}
+    </style>
+</head>
+<body>
+<h4>Time:</h4>
+<p id="timer"></p>
+<button id="play">Start</button>
+<button id="reset">Reset</button>
+<button id="record">Record Time</button>
+<h4>Recorded Time:</h4> 
+<p id="recordedTime"></p>
+
+</body>
+</html>
+<script>
+    // global variables
+// button variables
+var start = document.querySelector('#play');
+var reset = document.querySelector('#reset');
+var record = document.querySelector('#record');
+
+// time variables
+var timer = document.querySelector('#timer');
+var time = 0;
+var intervals = document.querySelector('#recordedTime');
+var interval;
+
+// function executions
+start.addEventListener('click', startTimer);
+reset.addEventListener('click', resetAll);
+record.addEventListener('click', recordTime);
+document.addEventListener('keydown', keyStart);
+document.addEventListener('keydown', keyReset);
+document.addEventListener('keydown', keyRecord);
+
+
+
+// function definitions
+function startTimer(){
+  interval = setInterval(function(){
+    time++;
+    timer.innerHTML = "Total time elapsed: " + (time/100); 
+  }, 1); 
+  
+  start.innerHTML = "Stop";
+  start.removeEventListener('click', startTimer);
+  start.addEventListener('click', stopTimer);
+}
+
+function stopTimer(){
+  clearInterval(interval);
+  start.innerHTML = "Start";
+  start.removeEventListener('click', stopTimer);
+  start.addEventListener('click', startTimer);
+}
+
+function resetAll(){
+  clearInterval(interval);
+  time = 0;
+  timer.innerHTML = "";
+  intervals.innerHTML = "";
+  start.innerHTML = "Start";
+  start.removeEventListener('click', stopTimer);
+  start.addEventListener('click', startTimer);
+} 
+
+function recordTime(){
+  intervals.innerHTML += time.toFixed(2) + "<br>";
+}
+
+function keyStart(event){
+  if(event.key === "s"){
+    startTimer();
+    document.removeEventListener('keydown', keyStart);
+    document.addEventListener('keydown', keyStop);
+  } 
+}
+
+function keyStop(event){
+  if(event.key === "s"){
+    stopTimer();
+    document.removeEventListener('keydown', keyStop);
+    document.addEventListener('keydown', keyStart);
+  } 
+}
+
+function keyReset(event){
+  if(event.key === "r"){
+    resetAll();
+  }
+}
+
+function keyRecord(event){
+  if(event.key === "t"){
+    recordTime();
+  }
+}
+</script>
