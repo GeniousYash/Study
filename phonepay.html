@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #processing {
+            display: none;
+            font-size: 1.2em;
+            color: orange;
+            margin-bottom: 20px;
+        }
+        #success, #failure {
+            display: none;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        #success img, #failure img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<button onclick="initiatePayment()">Make Payment</button>
+
+<div id="processing">Processing your payment...</div>
+
+<div id="success">
+    <img src="success.png" alt="Payment Successful">
+    <p>Payment Successful</p>
+</div>
+
+<div id="failure">
+    <img src="failure.png" alt="Payment Failed">
+    <p>Payment Failed</p>
+</div>
+
+<script>
+    function initiatePayment() {
+        const processingElement = document.getElementById('processing');
+        const successElement = document.getElementById('success');
+        const failureElement = document.getElementById('failure');
+
+        // Show processing state
+        processingElement.style.display = 'block';
+
+        // Simulate payment with a promise
+        simulatePayment()
+            .then(() => {
+                // Payment successful
+                processingElement.style.display = 'none';
+                successElement.style.display = 'block';
+            })
+            .catch(() => {
+                // Payment failed
+                processingElement.style.display = 'none';
+                failureElement.style.display = 'block';
+            });
+    }
+
+    function simulatePayment() {
+        // Simulate asynchronous payment processing with a promise
+        return new Promise((resolve, reject) => {
+            // Randomly decide if the payment is successful or not
+            const isPaymentSuccessful = Math.random() < 0.8; // 80% chance of success
+
+            // Simulate asynchronous processing time
+            const processingTime = Math.floor(Math.random() * 3000) + 2000; // Random time between 2 to 5 seconds
+
+            setTimeout(() => {
+                if (isPaymentSuccessful) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            }, processingTime);
+        });
+    }
+</script>
+
+</body>
+</html>
